@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' data: gap: http://api.openweathermap.org https://ssl.gstatic.com 'unsafe-eval';
+        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.gstatic.com https://*.googleapis.com;
+        style-src 'self' 'unsafe-inline' *;
+        media-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+        font-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+        img-src * 'self' data: https:;">
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <title>Weather App</title>
+</head>
+<body>
+
+    <!--Página Principal
+    ###########################################################################-->
+    <div data-role="page" id="main-page">
+        <div data-role="header" data-position="fixed">
+            <h1 id="app-title">Weather App</h1>
+        </div>
+
+        <div data-role="navbar">
+            <ul>
+                <li><a class="ui-btn ui-btn-active ui-state-persist  ui-icon-location ui-btn-icon-bottom" href="#main-page">Map</a></li>
+                <li><a class="ui-btn ui-icon-navigation ui-btn-icon-bottom" href="#child_page2">Wheater Form</a></li>
+            </ul>
+        </div><!-- /navbar -->
+        <div role="main" class="ui-content">
+
+            <div id="map"></div>
+            <div id="buttons-section">
+                <button id="btnLocation">Get Location</button>
+            </div>
+        </div>
+
+            <div data-id="f1" data-role="footer" data-position="fixed">
+                <h4> Copyright ESTGP &copy; 2019</h4>
+            </div>
+        </div>
+
+
+    <!--Página Filha 2
+    ###########################################################################-->
+    <div data-role="page" id="child_page2">
+        <div data-role="header" data-position="fixed">
+            <h1 id="app-title">Weather App</h1>
+        </div>
+        <div class="nav" data-role="navbar">
+            <ul>
+                <li><a class="ui-btn ui-icon-location ui-btn-icon-bottom" href="#main-page">Map</a></li>
+                <li><a class="ui-btn ui-btn-active ui-state-persist ui-icon-navigation ui-btn-icon-bottom" href="#child_page2">Wheater Form</a></li>
+            </ul>
+        </div><!-- /navbar -->
+        <div role="main" class="ui-content">
+
+            <div id="form">
+                <form>
+                    <label for="zip-code">Type your zip code:</label>
+                    <input id="zip-code-input" name="zip-code" placeholder="ex. Lisbon" required />
+                    <button id="get-weather-form-btn" data-role="button" data-icon="search">Find Weather</button>
+                </form>
+
+                <ul id="weather-data" data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow not-displayed">
+                    <li data-role="list-divider" id="title" class="ui-li-divider ui-bar-a"></li>
+                    <li><span id="summary"><span id="temperature"></span> C <span id="icon"></span"></li>
+                    <li>Wind: <span id="wind"></span> knots</li>
+                    <li>Humidity: <span id="humidity"></span> %</li>
+                    <li>Visibility: <span id="visibility"></span></li>
+                    <li>Sunrise: <span id="sunrise"></span></li>
+                    <li>Sunset: <span id="sunset"></span></li>
+                </ul>
+
+                <div id="error-msg" class="not-displayed">
+                </div>
+            </div>
+
+        </div>
+        <div data-id="f1" data-role="footer" data-position="fixed">
+            <h4> Copyright ESTGP &copy; 2019</h4>
+        </div>
+    </div>
+
+    <script src="scripts/jquery-1.8.0.min.js"></script>
+    <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLC112AUDD-6_mwkBStTwSxi0NGH5sCUo"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

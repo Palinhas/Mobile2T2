@@ -27,7 +27,7 @@
         // Geo Location
         document.getElementById("btnLocation").addEventListener("touchend", getLocation, false);
         map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        cordova.dialogGPS();
+        //cordova.dialogGPS();
 
     };
 
@@ -91,12 +91,12 @@
 
             },
             function (error) {
-                //navigator.notification.alert(
-                //    'Code: ' + error.code + '\n' + 'Message: ' + error.message + '\n',      // message
-                //    null,                                                                   // callback
-                //    'Error',                                                                // title
-                //    'Ok'                                                                    // buttonName
-                //);
+                navigator.notification.alert(
+                    'Code: ' + error.code + '\n' + 'Message: ' + error.message + '\n',      // message
+                    null,                                                                   // callback
+                    'Error',                                                                // title
+                    'Ok'                                                                    // buttonName
+                );
             },
             { maximumAge: 5000, timeout: 15000, enableHighAccuracy: true });
     }
@@ -134,20 +134,35 @@
                 if (results[1]) {
                     var lat = marker.getPosition().lat();
                     var lng = marker.getPosition().lng();
-                    var resultCoordinates = getWeatherWithCoordinates(lat, lng);
+                
+                    var queryString = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&appid=' + OpenWeatherAppKey +'&units=metric';
+                    $.getJSON(queryString, function (result) {
+                        
+                        content = 'City: '+result.name + "<br/>";
+                        content += 'temperature: ' + result.main.temp + " ºC<br/>";
+                        content += 'Wind: ' + result.wind.speed + "<br/>";
+                        content += 'humidity: ' + result.main.humidity + "<br/>";
+                        content += 'visibility: ' + result.weather[0].main + "<br/>";
 
-                    console.log(resultCoordinates);
+                        var sunriseDate = new Date(result.sys.sunrise * 1000);
+                        content += 'sunrise: ' + sunriseDate.toLocaleTimeString() + "<br/>";
 
-                    //content = "Latitude:  " + marker.getPosition().lat() + "<br/>";
-                    //content += "Longitude:  " + marker.getPosition().lng() + "<br/>";
-                    //content += results[1].formatted_address;
+                        var sunsetDate = new Date(result.sys.sunset * 1000);
+                        content += 'sunset: ' + sunsetDate.toLocaleTimeString() + "<br/>";
 
-                    //content = "Latitude:  " + marker.getPosition().lat() + "<br/>";
-                    //content += "Longitude:  " + marker.getPosition().lng() + "<br/>";
-                    //content += results[1].formatted_address;
+                        var imgUrl = 'http://openweathermap.org/img/wn/' + result.weather[0].icon + '@2x.png';
+                        content += '<img src="' + imgUrl + '" width="50px" height="50px" alt="Image Wheater">';
 
-                    infowindow.setContent(content);
-                    infowindow.open(map, marker);
+
+                        infowindow.setContent(content);
+                        infowindow.open(map, marker);
+
+                    }).fail(function (error) {
+                        content = 'Error retrieving data. ' + error.statusText;
+                        infowindow.setContent(content);
+                        infowindow.open(map, marker);
+                    });
+                    return false;
 
                 } else {
                     navigator.notification.alert('No results found');
@@ -159,70 +174,5 @@
 
     }
 
-    // Api coordinates
-    function getWeatherWithCoordinates(lat, lng) {
- 
-        var queryString =
-            'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '?lon=' + lng + '&appid=' + OpenWeatherAppKey + '&units=metric';
-       
-        $.getJSON(queryString, function (results) {
-            showWeatherDataCoordinates(results);
-        }).fail(function (error) {
-            //navigator.notification.alert(
-            //    'Code: ' + error.code + '\n' + 'Message: ' + error.message + '\n',      // message
-            //    null,                                                                   // callback
-            //    'Error',                                                                // title
-            //    'Ok'                                                                    // buttonName
-        });
-        return false;
-    }
-
-    // Backup
-    //function setMarker(latitude, longitude) {
-
-    //    var latlng = new google.maps.LatLng(latitude, longitude);
-
-    //    if (marker === null) {
-
-    //        marker = new google.maps.Marker({
-    //            position: latlng
-    //        });
-    //        marker.setMap(map);
-    //    }
-    //    else {
-    //        marker.setPosition(latlng);
-    //    }
-
-    //    map.setZoom(16);
-    //    map.setCenter(marker.getPosition());
-    //    setInfoWindow();
-    //}
-
-    //function setInfoWindow() {
-
-    //    var geocoder = new google.maps.Geocoder;
-    //    var infowindow = new google.maps.InfoWindow;
-    //    var content;
-
-    //    geocoder.geocode({ 'location': marker.getPosition() }, function (results, status) {
-    //        if (status === 'OK') {
-    //            if (results[1]) {
-
-    //                content = "Latitude:  " + marker.getPosition().lat() + "<br/>";
-    //                content += "Longitude:  " + marker.getPosition().lng() + "<br/>";
-    //                content += results[1].formatted_address;
-
-    //                infowindow.setContent(content);
-    //                infowindow.open(map, marker);
-
-    //            } else {
-    //                navigator.notification.alert('No results found');
-    //            }
-    //        } else {
-    //            navigator.notification.alert('Geocoder failed due to: ' + status);
-    //        }
-    //    });
-
-    //}
 
 })();

@@ -34,22 +34,22 @@
 
         <div data-role="navbar">
             <ul>
-                <li><a class="ui-btn ui-btn-active ui-state-persist  ui-icon-location ui-btn-icon-bottom" href="#main-page">Map</a></li>
-                <li><a class="ui-btn ui-icon-navigation ui-btn-icon-bottom" href="#child_page2">Wheater Form</a></li>
+                <li><a class="ui-btn ui-btn-active ui-state-persist  ui-icon-location ui-btn-icon-bottom" href="#main-page"><span class="navbarMap"></span></a></li>
+                <li><a class="ui-btn ui-icon-navigation ui-btn-icon-bottom" href="#child_page2"><span class="navbarWheaterForm"></span></a></li>
             </ul>
         </div><!-- /navbar -->
         <div role="main" class="ui-content">
 
             <div id="map"></div>
             <div id="buttons-section">
-                <button id="btnLocation">Get Location</button>
+                <button id="btnLocation"></button>
             </div>
         </div>
 
-            <div data-id="f1" data-role="footer" data-position="fixed">
-                <h4> Copyright ESTGP &copy; 2019</h4>
-            </div>
+        <div data-id="f1" data-role="footer" data-position="fixed">
+            <h4> Copyright ESTGP &copy; 2019, Carlos Bicho</h4>
         </div>
+    </div>
 
 
     <!--Página Filha 2
@@ -75,7 +75,7 @@
 
                 <ul id="weather-data" data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow not-displayed">
                     <li data-role="list-divider" id="title" class="ui-li-divider ui-bar-a"></li>
-                    <li><span id="summary"><span id="temperature"></span> C <span id="icon"></span"></li>
+                    <li><span id="summary"><span id="temperature"></span> <span id="metricSimbol"></span> <span id="icon"></span"></li>
                     <li>Wind: <span id="wind"></span> knots</li>
                     <li>Humidity: <span id="humidity"></span> %</li>
                     <li>Visibility: <span id="visibility"></span></li>
@@ -89,7 +89,7 @@
 
         </div>
         <div data-id="f1" data-role="footer" data-position="fixed">
-            <h4> Copyright ESTGP &copy; 2019</h4>
+            <h4> Copyright ESTGP &copy; 2019, Carlos Bicho</h4>
         </div>
     </div>
 
@@ -98,6 +98,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLC112AUDD-6_mwkBStTwSxi0NGH5sCUo"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
 </body>
 </html>

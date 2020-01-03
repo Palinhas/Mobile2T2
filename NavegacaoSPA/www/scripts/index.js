@@ -7,7 +7,10 @@
 
     // Global Variables
     var OpenWeatherAppKey = "7de943075bfa7d0cc3858dccb02b29a5";
-
+    var locale;
+    var measure;
+    var measureSimbol;
+    // Map constructor
     var map = null;
     var marker = null;
     var mapOptions = {
@@ -29,15 +32,15 @@
         map = new google.maps.Map(document.getElementById("map"), mapOptions);
         //cordova.dialogGPS();
 
+        //Set locale
+        setLocale();
     };
 
     // Form Wheater
     function getWeatherWithZipCode() {
        
         var zipcode = $('#zip-code-input').val();
-        var queryString =
-            'http://api.openweathermap.org/data/2.5/weather?q='
-            + zipcode + '&appid=' + OpenWeatherAppKey + '&units=metric';
+        var queryString = 'http://api.openweathermap.org/data/2.5/weather?q=' + zipcode + '&appid=' + OpenWeatherAppKey + '&units=' + measure + '';
         $.getJSON(queryString, function (results) {
             showWeatherData(results);
         }).fail(function (jqXHR) {
@@ -135,11 +138,11 @@
                     var lat = marker.getPosition().lat();
                     var lng = marker.getPosition().lng();
                 
-                    var queryString = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&appid=' + OpenWeatherAppKey +'&units=metric';
+                    var queryString = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&appid=' + OpenWeatherAppKey + '&units=' + measure +'';
                     $.getJSON(queryString, function (result) {
                         
                         content = 'City: '+result.name + "<br/>";
-                        content += 'temperature: ' + result.main.temp + " ºC<br/>";
+                        content += 'temperature: ' + result.main.temp + ' ' + measureSimbol +"<br/>";
                         content += 'Wind: ' + result.wind.speed + "<br/>";
                         content += 'humidity: ' + result.main.humidity + "<br/>";
                         content += 'visibility: ' + result.weather[0].main + "<br/>";
@@ -174,5 +177,46 @@
 
     }
 
+    // Globalization
+    function setLocale() {
+        navigator.globalization.getPreferredLanguage(
+            function (language) {
+                locale = language.value.split('-')[0];
+                verifyLocaleStrings();
+                setLanguage();
+            },
+            function (error) {
+                console.log('Error getting language: ' + error.message)
+                locale = 'pt';
+                setLanguage();
+            }
+        );
+    }
+
+    function verifyLocaleStrings() {
+        try {
+            var string = strings[locale].btnLocation;
+        }
+        catch (error) {
+            console.log('Error: ' + error.message)
+            console.log("Language string not found. Reseting to default");
+            locale = 'pt';
+        }
+    }
+
+    function setLanguage() {
+        // Measure
+        measure = strings[locale].measure;
+        measureSimbol = strings[locale].measureSimbol;
+        $('#measureSimbol').html(strings[locale].measureSimbol);
+        
+        // Navbar
+        $('.navbarMap').html(strings[locale].navbarMap);
+        $('.navbarWheaterForm').html(strings[locale].navbarWheaterForm);
+
+        // Main Page
+        $('#btnLocation').html(strings[locale].btnLocation);
+        
+    }
 
 })();
